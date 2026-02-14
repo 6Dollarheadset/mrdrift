@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mr. Drift - Web Drift Racing</title>
+    <link rel="stylesheet" href="/static/css/style.css">
+</head>
+<body>
+    <div id="game-container">
+        <!-- Game Canvas -->
+        <canvas id="gameCanvas"></canvas>
+
+        <!-- UI Overlay -->
+        <div id="ui-overlay">
+            <!-- Top bar with stats -->
+            <div id="top-bar">
+                <div id="speed-display" class="stat-box">
+                    <span class="stat-label">Speed</span>
+                    <span id="speed-value" class="stat-value">0</span>
+                    <span class="stat-unit">km/h</span>
+                </div>
+
+                <div id="drift-display" class="stat-box">
+                    <span class="stat-label">Drift Score</span>
+                    <span id="drift-score" class="stat-value">0</span>
+                </div>
+
+                <div id="combo-display" class="stat-box">
+                    <span class="stat-label">Combo</span>
+                    <span id="combo-value" class="stat-value">x1.0</span>
+                </div>
+            </div>
+
+            <!-- Drift indicator -->
+            <div id="drift-indicator" class="hidden">
+                <span>DRIFTING!</span>
+            </div>
+
+            <!-- Controls help -->
+            <div id="controls-help">
+                <h3>🎮 Controls</h3>
+                <p><strong>↑ Up Arrow</strong> - Gas</p>
+                <p><strong>↓ Down Arrow</strong> - Reverse</p>
+                <p><strong>← → Arrows</strong> - Steer Left/Right</p>
+                <p><strong>Space Bar</strong> - Brake & Drift</p>
+                <p style="margin-top: 10px; color: #ffaa00; font-size: 12px;">
+                    💡 Hold Space while turning to drift!
+                </p>
+            </div>
+        </div>
+
+        <!-- Track selection menu (shown before game starts) -->
+        <div id="track-select-menu">
+            <h1>Mr. Drift</h1>
+            <h2>Select a Track</h2>
+            <div id="track-list">
+                <!-- Populated by JavaScript -->
+            </div>
+            <div id="loading">Loading...</div>
+            <div style="margin-top: 20px; text-align: center;">
+                <a href="/track-editor" style="display: inline-block; padding: 12px 24px; background: rgba(0, 255, 136, 0.2); border: 2px solid #00ff88; border-radius: 8px; color: #00ff88; text-decoration: none; font-weight: bold; transition: all 0.3s;">
+                    🏗️ Track Editor
+                </a>
+            </div>
+        </div>
+
+        <!-- Connection status -->
+        <div id="connection-status">
+            <span id="status-indicator"></span>
+            <span id="status-text">Connecting...</span>
+        </div>
+    </div>
+
+    <!-- JavaScript modules -->
+    <script src="/static/js/input.js"></script>
+    <script src="/static/js/renderer.js"></script>
+    <script src="/static/js/game.js"></script>
+    <script src="/static/js/main.js"></script>
+</body>
+</html>

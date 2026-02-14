@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Track Editor - Mr. Drift</title>
+    <link rel="stylesheet" href="/static/css/editor-style.css">
+</head>
+<body>
+    <div id="editor-container">
+        <!-- Top Header -->
+        <div id="editor-header">
+            <h1>🏗️ Track Editor</h1>
+            <div id="header-buttons">
+                <button id="btn-back" class="header-btn">← Back to Menu</button>
+                <button id="btn-clear" class="header-btn danger">Clear All</button>
+            </div>
+        </div>
+
+        <!-- Main Editor Area -->
+        <div id="editor-main">
+            <!-- Toolbar -->
+            <div id="toolbar">
+                <h3>Tools</h3>
+
+                <div class="tool-section">
+                    <h4>Boundaries</h4>
+                    <button class="tool-btn active" data-tool="outer" title="Click to add outer boundary points">
+                        <span class="tool-icon">⬛</span>
+                        <span class="tool-label">Outer Boundary</span>
+                    </button>
+                    <button class="tool-btn" data-tool="inner" title="Click to add inner boundary points">
+                        <span class="tool-icon">▫️</span>
+                        <span class="tool-label">Inner Boundary</span>
+                    </button>
+                </div>
+
+                <div class="tool-section">
+                    <h4>Track Elements</h4>
+                    <button class="tool-btn" data-tool="spawn" title="Click to set spawn point">
+                        <span class="tool-icon">🏁</span>
+                        <span class="tool-label">Spawn Point</span>
+                    </button>
+                    <button class="tool-btn" data-tool="finish" title="Click two points for finish line">
+                        <span class="tool-icon">🏆</span>
+                        <span class="tool-label">Finish Line</span>
+                    </button>
+                </div>
+
+                <div class="tool-section">
+                    <h4>Actions</h4>
+                    <button id="btn-close-outer" class="action-btn">Close Outer Loop</button>
+                    <button id="btn-close-inner" class="action-btn">Close Inner Loop</button>
+                    <button id="btn-undo" class="action-btn">↶ Undo</button>
+                    <button id="btn-redo" class="action-btn">↷ Redo</button>
+                </div>
+
+                <div class="tool-section">
+                    <h4>View</h4>
+                    <label class="checkbox-label">
+                        <input type="checkbox" id="snap-to-grid" checked>
+                        Snap to Grid (50px)
+                    </label>
+                    <label class="checkbox-label">
+                        <input type="checkbox" id="show-grid" checked>
+                        Show Grid
+                    </label>
+                </div>
+            </div>
+
+            <!-- Canvas Area -->
+            <div id="canvas-container">
+                <canvas id="editorCanvas"></canvas>
+                <div id="canvas-info">
+                    <span id="mouse-coords">X: 0, Y: 0</span>
+                    <span id="zoom-level">Zoom: 100%</span>
+                </div>
+            </div>
+
+            <!-- Properties Panel -->
+            <div id="properties-panel">
+                <h3>Track Properties</h3>
+
+                <div class="form-group">
+                    <label for="track-name">Track Name *</label>
+                    <input type="text" id="track-name" placeholder="e.g., Sunset Circuit" maxlength="50" required>
+                </div>
+
+                <div class="form-group">
+                    <label for="track-difficulty">Difficulty</label>
+                    <select id="track-difficulty">
+                        <option value="Easy">Easy</option>
+                        <option value="Medium" selected>Medium</option>
+                        <option value="Hard">Hard</option>
+                        <option value="Expert">Expert</option>
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label for="track-description">Description</label>
+                    <textarea id="track-description" placeholder="Describe your track..." rows="3" maxlength="200"></textarea>
+                </div>
+
+                <div class="form-group">
+                    <label for="track-author">Author</label>
+                    <input type="text" id="track-author" placeholder="Your name" maxlength="30">
+                </div>
+
+                <div class="form-stats">
+                    <h4>Track Stats</h4>
+                    <div class="stat-item">
+                        <span class="stat-label">Outer Points:</span>
+                        <span id="stat-outer-points" class="stat-value">0</span>
+                    </div>
+                    <div class="stat-item">
+                        <span class="stat-label">Inner Points:</span>
+                        <span id="stat-inner-points" class="stat-value">0</span>
+                    </div>
+                    <div class="stat-item">
+                        <span class="stat-label">Spawn Set:</span>
+                        <span id="stat-spawn" class="stat-value">❌</span>
+                    </div>
+                    <div class="stat-item">
+                        <span class="stat-label">Finish Line:</span>
+                        <span id="stat-finish" class="stat-value">❌</span>
+                    </div>
+                </div>
+
+                <div class="action-buttons">
+                    <button id="btn-save" class="primary-btn">💾 Save Track</button>
+                    <button id="btn-load" class="secondary-btn">📂 Load Track</button>
+                    <button id="btn-test" class="secondary-btn">🎮 Test Track</button>
+                    <button id="btn-export" class="secondary-btn">📥 Export JSON</button>
+                </div>
+
+                <div id="validation-status"></div>
+            </div>
+        </div>
+
+        <!-- Instructions -->
+        <div id="instructions">
+            <h4>💡 Quick Guide</h4>
+            <ul>
+                <li><strong>Outer Boundary:</strong> Click points to create track walls (min 3 points)</li>
+                <li><strong>Inner Boundary:</strong> Create inner walls for closed circuits</li>
+                <li><strong>Spawn Point:</strong> Click to set car start position, drag arrow for direction</li>
+                <li><strong>Finish Line:</strong> Click two points to create race finish</li>
+                <li><strong>Move Points:</strong> Drag existing points to reposition</li>
+                <li><strong>Delete Point:</strong> Right-click or press Delete key</li>
+                <li><strong>Pan:</strong> Middle-click and drag</li>
+                <li><strong>Zoom:</strong> Mouse wheel</li>
+            </ul>
+        </div>
+    </div>
+
+    <!-- Load Modal -->
+    <div id="load-modal" class="modal hidden">
+        <div class="modal-content">
+            <h2>Load Custom Track</h2>
+            <div id="track-list-container">
+                <!-- Populated by JavaScript -->
+            </div>
+            <button id="btn-close-modal" class="secondary-btn">Cancel</button>
+        </div>
+    </div>
+
+    <!-- Scripts -->
+    <script src="/static/js/editor-renderer.js"></script>
+    <script src="/static/js/editor-tools.js"></script>
+    <script src="/static/js/track-editor.js"></script>
+</body>
+</html>
